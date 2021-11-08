@@ -1,5 +1,5 @@
 --Show all data
-SELECT DISTINCT COUNT(*)
+SELECT (*)
 FROM ['divvy-tripdata$']
 
 --Find Redundant
