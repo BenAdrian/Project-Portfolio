@@ -1,0 +1,111 @@
+#All Data
+SELECT  *
+FROM `model-signifier-321912.Bellabeat.daily_activity`;
+
+#Select the Date
+SELECT MIN(ActivityDate) AS Star_Day, MAX(ActivityDate) AS End_Day
+FROM `model-signifier-321912.Bellabeat.daily_activity`;
+
+#Show the number of the days
+SELECT COUNT(DISTINCT ActivityDate) AS Number_of_Days
+FROM `model-signifier-321912.Bellabeat.daily_activity`;
+
+#Show total of the user daily_activity
+SELECT COUNT(DISTINCT Id) AS Total_User
+FROM `model-signifier-321912.Bellabeat.daily_activity`;
+
+#Show total of the user sleepDay
+SELECT COUNT(DISTINCT Id) AS Total_User
+FROM `model-signifier-321912.Bellabeat.sleepDay`;
+
+#Show total of the weight
+SELECT COUNT(DISTINCT Id) AS Total_User
+FROM `model-signifier-321912.Bellabeat.weight`;
+
+#Show total of the dailyIntensities
+SELECT COUNT(DISTINCT Id) AS Total_User
+FROM `model-signifier-321912.Bellabeat.dailyIntensities`;
+
+#Classification
+SELECT Id, ROUND(AVG(TotalDistance), 2) AS Distance_Average, COUNT(DISTINCT ActivityDate) AS Number_of_Days,
+CASE WHEN ROUND(AVG(TotalDistance), 2) < 5 THEN 'Beginner'
+WHEN ROUND(AVG(TotalDistance), 2) >= 5 AND ROUND(AVG(TotalDistance), 2) <= 10 THEN 'Intermediate'
+ELSE 'Pro' END AS User_Type
+FROM `model-signifier-321912.Bellabeat.daily_activity`
+GROUP BY  Id
+ORDER BY User_Type;
+
+#User activity by Day
+SELECT ac.Day, COUNT(*) AS User_Activity, a.User_Type 
+FROM (SELECT Id,
+    CASE WHEN ROUND(AVG(TotalDistance), 2) < 5 THEN 'Beginner'
+    WHEN ROUND(AVG(TotalDistance), 2) >= 5 AND ROUND(AVG(TotalDistance), 2) <= 10 THEN 'Intermediate'
+    ELSE 'Pro' END AS User_Type
+    FROM `model-signifier-321912.Bellabeat.daily_activity`
+    GROUP BY Id) AS a
+INNER JOIN `model-signifier-321912.Bellabeat.daily_activity`AS ac
+ON a.Id = ac.Id
+GROUP BY ac.Day, a.User_Type 
+ORDER BY ac.Day, a.User_Type; 
+
+#Average Intesity Minutes
+SELECT Id, ROUND(AVG(VeryActiveMinutes), 2) AS Active_Minutes, 
+ROUND(AVG(FairlyActiveMinutes), 2) AS Fair_Minutes,
+ROUND(AVG(LightlyActiveMinutes), 2) AS Light_Minutes,
+ROUND(AVG(SedentaryMinutes), 2) AS Sedentary_Minutes,
+CASE WHEN ROUND(AVG(TotalDistance), 2) < 5 THEN 'Beginner'
+WHEN ROUND(AVG(TotalDistance), 2) >= 5 AND ROUND(AVG(TotalDistance), 2) <= 10 THEN 'Intermediate'
+ELSE 'Pro' END AS User_Type,
+FROM `model-signifier-321912.Bellabeat.daily_activity`
+GROUP BY  Id
+ORDER BY User_Type;
+
+#Calories and Total Minute Sleep
+SELECT sleep.Id, ROUND(AVG(activity.Calories),2) AS Calories,  ROUND(AVG(sleep.TotalMinutesAsleep)) AS Total_Minute_Sleep
+FROM `model-signifier-321912.Bellabeat.daily_activity`AS activity
+INNER JOIN `model-signifier-321912.Bellabeat.sleepDay` AS sleep
+ON activity.Id = sleep.Id
+GROUP BY sleep.Id
+
+#Weight
+SELECT DISTINCT a.id, ROUND(AVG(w.WeightKg),1) AS Weight_Kg,
+CASE WHEN ROUND(AVG(a.TotalDistance), 2) < 5 THEN 'Beginner'
+WHEN ROUND(AVG(a.TotalDistance), 2) >= 5 AND ROUND(AVG(a.TotalDistance), 2) <= 10 THEN 'Intermediate'
+ELSE 'Pro' END AS User_Type
+FROM `model-signifier-321912.Bellabeat.daily_activity` AS a
+INNER JOIN `model-signifier-321912.Bellabeat.weight` AS w
+ON a.Id = w.Id
+GROUP BY a.Id;
+
+#Average Day
+SELECT ROUND(AVG(j.day),2)
+FROM (SELECT a.id, count(DISTINCT w.Date) AS day
+FROM `model-signifier-321912.Bellabeat.daily_activity` AS a
+INNER JOIN `model-signifier-321912.Bellabeat.weight` AS w
+ON a.Id = w.Id
+GROUP BY a.Id) AS j;
+
+#Sleep Time
+SELECT a.Id, ROUND(AVG(d.TotalMinutesAsleep/60),2) AS Sleep_Hours, COUNT(DISTINCT d.SleepDay) AS Number_of_Days,
+CASE WHEN ROUND(AVG(a.TotalDistance), 2) < 5 THEN 'Beginner'
+WHEN ROUND(AVG(a.TotalDistance), 2) >= 5 AND ROUND(AVG(a.TotalDistance), 2) <= 10 THEN 'Intermediate'
+ELSE 'Pro' END AS User_Type
+FROM `model-signifier-321912.Bellabeat.daily_activity` AS a
+INNER JOIN `model-signifier-321912.Bellabeat.sleepDay` AS d
+ON a.Id = d.Id
+GROUP BY a.Id
+ORDER BY User_Type;
+
+#Average Day
+SELECT AVG(b.day)
+FROM (SELECT a.Id, SUM(d.TotalMinutesAsleep), COUNT(DISTINCT d.SleepDay) AS day
+FROM `model-signifier-321912.Bellabeat.daily_activity` AS a
+INNER JOIN `model-signifier-321912.Bellabeat.sleepDay` AS d
+ON a.Id = d.Id
+GROUP BY a.Id) AS b;
+
+
+
+
+
+
