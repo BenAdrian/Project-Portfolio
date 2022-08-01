@@ -10,5 +10,5 @@ The data set I took it from [Kaggle](https://www.kaggle.com/datasets/dgomonov/ne
 Tools: The tools that I used for this analysis are SQL and Tableau for the visualization.
 
 Data set: [Kaggle](https://www.kaggle.com/datasets/dgomonov/new-york-city-airbnb-open-data)
-Dashboard: [visualization](https://public.tableau.com/app/profile/benyamin.adrian/viz/AirbnbNYC2019_16590858743510/airbnbNYC2019)
+Dashboard: [Visualization](https://public.tableau.com/app/profile/benyamin.adrian/viz/AirbnbNYC2019_16590858743510/airbnbNYC2019)
 
