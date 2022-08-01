@@ -8,3 +8,5 @@ We are going to analyze international debt data collected by The World Bank. The
 - What is the total amount of debt that is owed by the countries listed in the dataset?
 - Which country owns the maximum amount of debt and what does that amount look like?
 - What is the average amount of debt owed by countries across different debt indicators?
+
+Tools: The tool that I use for this analysis is SQL that has been provided by DataCamp in their website.
